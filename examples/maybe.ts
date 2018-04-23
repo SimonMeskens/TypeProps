@@ -53,9 +53,10 @@ const GenericMaybe = <
 };
 
 // A concrete representation of a Maybe
+const MAYBE = Symbol("maybe");
 type Maybe<T = any> = Just<T> | None;
-type Just<T> = { value: T };
-type None = { [key: string]: never };
+type Just<T> = { [MAYBE]: T };
+type None = typeof MAYBE & { [key: string]: never };
 
 declare module "typeprops" {
     interface TypeProps<Type, Params extends ArrayLike<any>> {
@@ -66,12 +67,12 @@ declare module "typeprops" {
     }
 }
 {
-    const just = <T>(value: T) => ({ value });
+    const just = <T>(value: T) => ({ [MAYBE]: value });
     const none = {} as None;
 
     const match = <T, B, C>({ just, none }: { just: (x: T) => B; none: C }) => (
         maybe: Maybe<T>
-    ): B | C => ("value" in maybe ? just((maybe as Just<T>).value) : none);
+    ): B | C => (MAYBE in maybe ? just((maybe as Just<T>)[MAYBE]) : none);
 
     const { map, chain, of } = GenericMaybe({ just, none, match });
 
