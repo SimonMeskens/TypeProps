@@ -1,0 +1,25 @@
+{
+    "name": "typeprops",
+    "version": "0.1.0",
+    "description": "Small library for describing HKTs in TypeScript",
+    "typings": "index.d.ts",
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SimonMeskens/TypeProps.git"
+    },
+    "keywords": [
+        "typescript",
+        "hkt",
+        "types"
+    ],
+    "author": "Simon Meskens",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/SimonMeskens/TypeProps/issues"
+    },
+    "homepage": "https://github.com/SimonMeskens/TypeProps#readme",
+    "devDependencies": {
+        "typescript": "^2.8.3"
+    }
+}
