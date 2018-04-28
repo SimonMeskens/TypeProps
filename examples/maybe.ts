@@ -31,12 +31,10 @@ const GenericMaybe = <TTag extends TypeTag, TMap extends ArrayLike<any>>({
     // of :: a -> T a
     const of = just;
     // chain :: (a -> T b) -> T a -> T b
-    const chain = <T, M extends Generic<TTag, any>>(
-        transform: (value: T) => M
-    ): ((maybe: Generic<TTag, [T], TMap, M>) => M) =>
-        match({ none: none as M, just: transform }) as ((
-            maybe: Generic<TTag, [T], TMap, M>
-        ) => M);
+    const chain = <T, U, M extends Generic<TTag, [T], TMap, any>>(
+        transform: (value: T) => Generic<TTag, [U], TMap, M>
+    ): ((maybe: M) => Generic<TTag, [U], TMap, M>) =>
+        match({ none: none, just: transform });
 
     return { map, of, chain } as Monad<TTag, TMap>;
 };
