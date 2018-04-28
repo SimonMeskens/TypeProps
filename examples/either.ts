@@ -8,7 +8,7 @@ interface GenericEitherDefinition<
     TTag extends TypeTag,
     TMap extends ArrayLike<any>
 > {
-    left: <T>(left: T) => Generic<TTag, never>;
+    left: Generic<TTag, never> | (<T>(left: T) => Generic<TTag, never>);
     right: <T>(right: T) => Generic<TTag, [T], TMap, never>;
     match: GenericEitherMatch<TTag, TMap>;
 }
@@ -20,7 +20,7 @@ interface GenericEitherMatch<
 > {
     <L1, L2, R1, R2>(
         _: {
-            left: (left: L1) => L2;
+            left: L2 | ((left: L1) => L2);
             right: (right: R1) => R2;
         }
     ): (maybe: Generic<TTag, [R1], TMap, any>) => L2 | R2;
@@ -119,14 +119,9 @@ declare module "typeprops" {
 const maybe = {
     just: <T>(value: T) => ({ [MAYBE]: value } as Just<T>),
     none: {} as None,
-    match: <L1, R1, L2, R2>({
-        just,
-        none
-    }: {
-        just: (value: L1) => L2;
-        none: (value: R1) => R2;
-    }) => (maybe: Maybe<L1>): L2 | R2 =>
-        MAYBE in maybe ? just((maybe as Just<L1>)[MAYBE]) : none({} as R1)
+    match: <T, B, C>({ just, none }: { just: (value: T) => B; none: C }) => (
+        maybe: Maybe<T>
+    ): B | C => (MAYBE in maybe ? just((maybe as Just<T>)[MAYBE]) : none)
 };
 
 // Reuse generic implementation for our Maybe
@@ -137,9 +132,18 @@ const maybe = {
     // I can easily abstract out into a single function call,
     // but it's good to see the guts
     const { of, map, chain } = GenericEither<TypeTag<Maybe>, [_]>({
-        left: <T>(value: T) => none,
+        left: none,
         right: just,
-        match: ({ left, right }) => match({ none: left, just: right })
+        match: (<T, B, C>({
+            left,
+            right
+        }: {
+            right: (value: T) => B;
+            left: C;
+        }) => match({ none: left, just: right })) as GenericEitherMatch<
+            TypeTag<Maybe>,
+            [_]
+        >
     });
 
     console.log([
