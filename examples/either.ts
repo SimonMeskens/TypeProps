@@ -43,9 +43,11 @@ const GenericEither = <TTag extends TypeTag, TMap extends ArrayLike<any>>({
             right: (value: T) => right(transform(value))
         });
     };
-    //    match({ left, right: (value: T) => right(transform(value)) });
 
+    // Monad
+    // of :: a -> T a
     const of = right as <T>(value: T) => Generic<TTag, [T], TMap, never>;
+    // chain :: (a -> T b) -> T a -> T b
     const chain = <T, M extends Generic<TTag, any>>(
         transform: (value: T) => M
     ): ((maybe: Generic<TTag, [T], TMap, M>) => M) =>
@@ -64,7 +66,7 @@ type Right<T> = { right: T };
 
 declare module "typeprops" {
     interface TypeProps<T> {
-        ["examples/either#either"]: {
+        ["typeprops/examples#either"]: {
             infer: T extends Left<infer A>
                 ? [A, never]
                 : T extends Right<infer B> ? [never, B] : never;
@@ -91,6 +93,7 @@ declare module "typeprops" {
         match
     });
 
+    // Examples
     console.log([
         map((x: number) => x * 2)(of(21)),
         map((x: number) => x * 2)(left("error")),
@@ -101,36 +104,11 @@ declare module "typeprops" {
     ]);
 }
 
-// A concrete representation of a Maybe
-const MAYBE = Symbol("maybe");
-type Maybe<T = any> = Just<T> | None;
-type Just<T> = { [MAYBE]: T };
-type None = typeof MAYBE & { [key: string]: never };
-
-declare module "typeprops" {
-    interface TypeProps<T> {
-        ["examples/either#maybe"]: {
-            infer: T extends Maybe<infer A> ? [A] : never;
-            construct: Maybe<T[0]>;
-        };
-    }
-}
-
-const maybe = {
-    just: <T>(value: T) => ({ [MAYBE]: value } as Just<T>),
-    none: {} as None,
-    match: <T, B, C>({ just, none }: { just: (value: T) => B; none: C }) => (
-        maybe: Maybe<T>
-    ): B | C => (MAYBE in maybe ? just((maybe as Just<T>)[MAYBE]) : none)
-};
-
 // Reuse generic implementation for our Maybe
+import { Maybe } from "./maybe";
 {
-    const { none, just, match } = maybe;
+    const { none, just, match } = Maybe;
 
-    // translating the constructor names is boilerplate
-    // I can easily abstract out into a single function call,
-    // but it's good to see the guts
     const { of, map, chain } = GenericEither<TypeTag<Maybe>, [_]>({
         left: none,
         right: just,
@@ -146,6 +124,7 @@ const maybe = {
         >
     });
 
+    // Examples
     console.log([
         map((x: number) => x + 2)(of(42)),
         map((x: number) => x + 2)(none),

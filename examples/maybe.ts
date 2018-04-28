@@ -50,14 +50,14 @@ const GenericMaybe = <
 };
 
 // A concrete representation of a Maybe
-const MAYBE = Symbol("maybe");
-type Maybe<T = any> = Just<T> | None;
-type Just<T> = { [MAYBE]: T };
-type None = typeof MAYBE & { [key: string]: never };
+export const MAYBE = Symbol("maybe");
+export type Maybe<T = any> = Just<T> | None;
+export type Just<T> = { [MAYBE]: T };
+export type None = typeof MAYBE & { [key: string]: never };
 
 declare module "typeprops" {
     interface TypeProps<T> {
-        ["examples/maybe#maybe"]: {
+        ["typeprops/examples#maybe"]: {
             infer: T extends Just<infer A>
                 ? [A]
                 : T extends None ? None : never;
@@ -65,19 +65,17 @@ declare module "typeprops" {
         };
     }
 }
+
+export const Maybe = {
+    just: <T>(value: T) => ({ [MAYBE]: value } as Just<T>),
+    none: {} as None,
+    match: <T, B, C>({ just, none }: { just: (value: T) => B; none: C }) => (
+        maybe: Maybe<T>
+    ): B | C => (MAYBE in maybe ? just((maybe as Just<T>)[MAYBE]) : none)
+};
+
 {
-    const just = <T>(value: T) => ({ [MAYBE]: value });
-    const none = {} as None;
-
-    const match = <T, B, C>({
-        just,
-        none
-    }: {
-        just: (value: T) => B;
-        none: C;
-    }) => (maybe: Maybe<T>): B | C =>
-        MAYBE in maybe ? just((maybe as Just<T>)[MAYBE]) : none;
-
+    const { just, none, match } = Maybe;
     const { map, chain, of } = GenericMaybe({ just, none, match });
 
     // Examples
