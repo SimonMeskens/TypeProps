@@ -1,33 +1,23 @@
 // Based on provided sample by Asad Saeeduddin
 import { Generic, TypeTag, _ } from "typeprops";
 import { Monad } from "./types";
+import { ADTDefinition } from "./types";
 
 // just :: a -> T a
 // none :: T a
-interface GenericMaybeDefinition<
-    TTag extends TypeTag,
-    TMap extends ArrayLike<any>
-> {
-    just: <T>(value: T) => Generic<TTag, [T], TMap, never>;
-    none: Generic<TTag, never>;
-    match: GenericMaybeMatch<TTag, TMap>;
-}
-
 // match :: { "just" :: a -> b, "none" :: b } -> T a -> b
-interface GenericMaybeMatch<TTag extends TypeTag, TMap extends ArrayLike<any>> {
-    <T, B>(
-        _: {
-            just: (value: T) => B;
-            none: B;
-        }
-    ): (maybe: Generic<TTag, [T], TMap, any>) => B;
-}
-
 const GenericMaybe = <TTag extends TypeTag, TMap extends ArrayLike<any>>({
     just,
     none,
     match
-}: GenericMaybeDefinition<TTag, TMap>): Monad<TTag, TMap> => {
+}: ADTDefinition<
+    TTag,
+    TMap,
+    {
+        just: <T>(value: T) => Generic<TTag, [T], TMap, never>;
+        none: Generic<TTag, never>;
+    }
+>): Monad<TTag, TMap> => {
     // Functor
     // map :: (a -> b) -> T a -> T b
     const map = <T, U>(
@@ -44,7 +34,7 @@ const GenericMaybe = <TTag extends TypeTag, TMap extends ArrayLike<any>>({
     const chain = <T, M extends Generic<TTag, any>>(
         transform: (value: T) => M
     ): ((maybe: Generic<TTag, [T], TMap, M>) => M) =>
-        match({ none, just: transform }) as ((
+        match({ none: none as M, just: transform }) as ((
             maybe: Generic<TTag, [T], TMap, M>
         ) => M);
 
