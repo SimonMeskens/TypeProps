@@ -1,23 +1,19 @@
-import { Generic, TypeParams } from "typeprops";
-import { Push, Pop } from "./tuple";
+import { Generic, TypeTag, _ } from "typeprops";
 
-// Interface is monadic over the rightmost type parameter only
-export interface Monad<TGeneric> {
+export interface Monad<Tag extends TypeTag, Map extends ArrayLike<any> = [_]> {
     // Functor
     // map :: (a -> b) -> T a -> T b
     map: <T, U>(
         transform: (value: T) => U
-    ) => (
-        o: Generic<TGeneric, [T]>
-    ) => Generic<TGeneric, Push<Pop<TypeParams<TGeneric>>, U>>;
+    ) => <M extends Generic<Tag, [T], Map, any>>(
+        monad: M
+    ) => Generic<Tag, [U], Map, M>;
 
     // Monad
     // of :: a -> T a
-    of: <T>(value: T) => Generic<TGeneric, Push<Pop<TypeParams<TGeneric>>, T>>;
+    of: <T>(value: T) => Generic<Tag, [T], Map, never>;
     // chain :: (a -> T b) -> T a -> T b
-    chain: <T, U>(
-        transform: (a: T) => Generic<TGeneric, [U]>
-    ) => (
-        maybe: Generic<TGeneric, [T]>
-    ) => Generic<TGeneric, Push<Pop<TypeParams<TGeneric>>, U>>;
+    chain: <T, M extends Generic<Tag, any>>(
+        transform: (a: T) => M
+    ) => (monad: Generic<Tag, [T], Map, M>) => M;
 }
