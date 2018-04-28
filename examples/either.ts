@@ -18,12 +18,12 @@ interface GenericEitherMatch<
     TTag extends TypeTag,
     TMap extends ArrayLike<any>
 > {
-    <L1, L2, R1, R2>(
+    <T, U>(
         _: {
-            left: L2 | ((left: L1) => L2);
-            right: (right: R1) => R2;
+            left: U | ((left: T) => U);
+            right: (right: T) => U;
         }
-    ): (maybe: Generic<TTag, [R1], TMap, any>) => L2 | R2;
+    ): (maybe: Generic<TTag, [T], TMap, any>) => U;
 }
 
 const GenericEither = <TTag extends TypeTag, TMap extends ArrayLike<any>>({
@@ -112,13 +112,8 @@ import { Maybe } from "./maybe";
     const { of, map, chain } = GenericEither<TypeTag<Maybe>, [_]>({
         left: none,
         right: just,
-        match: (<T, B, C>({
-            left,
-            right
-        }: {
-            right: (value: T) => B;
-            left: C;
-        }) => match({ none: left, just: right })) as GenericEitherMatch<
+        match: (<T, B>({ left, right }: { right: (value: T) => B; left: B }) =>
+            match({ none: left, just: right })) as GenericEitherMatch<
             TypeTag<Maybe>,
             [_]
         >
