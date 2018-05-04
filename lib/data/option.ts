@@ -4,7 +4,7 @@ import { UnitLike } from "./unit";
 
 declare module "typeprops" {
     interface TypeProps<T, Params> {
-        "typeprops/examples/data#option": {
+        "typeprops/lib/data/option": {
             infer: T extends Option<infer L> ? [L] : never;
             construct: Params[0] extends infer A ? Option<A> : never;
         };

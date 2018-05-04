@@ -3,7 +3,7 @@ import { Option } from "./option";
 
 declare module "typeprops" {
     interface TypeProps<T, Params> {
-        "typeprops/examples/adt#unit": {
+        "typeprops/lib/data/unit": {
             infer: T extends Unit<infer L> ? [L] : never;
             construct: Unit<Params[0]>;
         };

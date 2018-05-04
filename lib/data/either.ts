@@ -4,7 +4,7 @@ import { UnitLike } from "./unit";
 
 declare module "typeprops" {
     interface TypeProps<T, Params> {
-        "typeprops/examples/data#either": {
+        "typeprops/lib/data/either": {
             infer: T extends Either<infer L, infer R> ? [L, R] : never;
             construct: Either<Params[0], Params[1]>;
         };
