@@ -23,6 +23,6 @@
     },
     "homepage": "https://github.com/SimonMeskens/TypeProps#readme",
     "devDependencies": {
-        "typescript": "^2.9.0-insiders.20180503"
+        "typescript": "^2.8.0"
     }
 }
