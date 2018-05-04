@@ -1,6 +1,6 @@
 {
     "name": "typeprops",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Small library for describing HKTs in TypeScript",
     "typings": "index.d.ts",
     "scripts": {},
@@ -11,7 +11,10 @@
     "keywords": [
         "typescript",
         "hkt",
-        "types"
+        "adt",
+        "types",
+        "fantasy-land",
+        "static-land"
     ],
     "author": "Simon Meskens",
     "license": "Apache-2.0",
@@ -20,6 +23,6 @@
     },
     "homepage": "https://github.com/SimonMeskens/TypeProps#readme",
     "devDependencies": {
-        "typescript": "^2.9.0-dev.20180427"
+        "typescript": "^2.9.0-insiders.20180503"
     }
 }
