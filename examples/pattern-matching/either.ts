@@ -87,12 +87,12 @@ declare module "./adt" {
         match
     });
 
-    let a = map((x: number) => x * 2)(of(21));
-    let b = map((x: number) => x * 2)(left("error"));
-    let c = chain((x: number) => (x > 40 ? left("error") : of(x * 2)))(of(42));
-    let d = chain((x: number) => (x > 40 ? left("error") : of(x * 2)))(of(32));
-    let e = map(() => left("error"))(of(42));
-    let f = map((x: number) => of(x * 2))(of(42));
+    let a = map((x: number) => x * 2)(of(21)); // a: Either<unknown, number>
+    let b = map((x: number) => x * 2)(left("error")); // b: Either<string, number>
+    let c = chain((x: number) => (x > 40 ? left("error") : of(x * 2)))(of(42)); // c: Either<unknown, number>
+    let d = chain((x: number) => (x > 40 ? left("error") : of(x * 2)))(of(32)); // d: Either<unknown, number>
+    let e = map(() => left("error"))(of(42)); // e: Either<unknown, Either<string, never>>
+    let f = map((x: number) => of(x * 2))(of(42)); // f: Either<unknown, Either<unknown, number>>
 
     // Examples
     console.log([a, b, c, d, e, f]);
