@@ -4,7 +4,7 @@
     "description": "Small library for describing HKTs in TypeScript",
     "typings": "index.d.ts",
     "scripts": {
-        "prepublish": "npm run build & npm run build:examples",
+        "prepare": "npm run build & npm run build:examples",
         "build": "tsc index.d.ts",
         "build:examples": "tsc -p ./examples/tsconfig.json"
     },
