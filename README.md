@@ -4,6 +4,18 @@
 
 Small library for describing HKTs in TypeScript
 
+## How to install
+
+```
+npm install typeprops
+```
+
+After install, you can import types like so:
+
+```TypeScript
+import { Generic, Parameters, unknown } from "typeprops";
+```
+
 ## How can you help?
 
 This library is still in alpha mode, expect breaking changes for now. What's currently needed is lots of interaction with people trying to type complex examples. Feel free to join us at Gitter or to post issues on the repository with sample code.
