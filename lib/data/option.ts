@@ -2,9 +2,11 @@ import { unknown } from "typeprops";
 import { Either, Left, Right } from "./either";
 import { UnitLike } from "./unit";
 
+declare const OptionId = "typeprops/lib/data/option";
+
 declare module "typeprops" {
     interface TypeProps<T, Params> {
-        "typeprops/lib/data/option": {
+        [OptionId]: {
             infer: T extends Option<infer L> ? [L] : never;
             construct: Params[0] extends infer A ? Option<A> : never;
         };

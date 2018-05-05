@@ -1,9 +1,11 @@
 import { unknown } from "typeprops";
 import { Option } from "./option";
 
+declare const UnitId = "typeprops/lib/data/unit";
+
 declare module "typeprops" {
     interface TypeProps<T, Params> {
-        "typeprops/lib/data/unit": {
+        [UnitId]: {
             infer: T extends Unit<infer L> ? [L] : never;
             construct: Unit<Params[0]>;
         };

@@ -2,11 +2,20 @@ import { unknown } from "typeprops";
 import { Option } from "./option";
 import { UnitLike } from "./unit";
 
+declare const EitherId = "typeprops/lib/data/either";
+
 declare module "typeprops" {
     interface TypeProps<T, Params> {
-        "typeprops/lib/data/either": {
+        [EitherId]: {
             infer: T extends Either<infer L, infer R> ? [L, R] : never;
             construct: Either<Params[0], Params[1]>;
+        };
+    }
+
+    interface FunctorProps<T = {}, Params extends ArrayLike<any> = never> {
+        [EitherId]: {
+            infer: T extends Either<any, infer R> ? [R] : never;
+            construct: Either<Parameters<T>[0], Params[0]>;
         };
     }
 }

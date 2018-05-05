@@ -1,13 +1,7 @@
 import { FunctorProps, Generic, Parameters } from "typeprops";
-import { Either } from "../data/either";
 
 declare module "typeprops" {
-    interface FunctorProps<T = {}, Params extends ArrayLike<any> = never> {
-        "typeprops/examples/data#either": {
-            infer: T extends Either<any, infer R> ? [R] : never;
-            construct: Either<Parameters<T>[0], Params[0]>;
-        };
-    }
+    interface FunctorProps<T = {}, Params extends ArrayLike<any> = never> {}
 }
 
 export type GenericFunctor<F, A = any> = Generic<F, [A], FunctorProps<F, [A]>>;
