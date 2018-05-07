@@ -28,19 +28,19 @@ export class Either<E, T> {
         if (iterable == undefined) {
             return new Left(left);
         }
-        let iterator = (iterable as any)[Symbol.iterator];
+        const iterator = (iterable as any)[Symbol.iterator];
         if (
             typeof iterator === "function" ||
             iterator.toString() === "[object Function]"
         ) {
-            let next = iterator.next();
+            const next = iterator.next();
             if (next.done) {
                 return new Left(left);
             } else {
                 return new Right(next.value);
             }
         }
-        let value = iterable as any;
+        const value = iterable as any;
         if ("length" in value && 0 in value) {
             return new Right(value[0]);
         }
