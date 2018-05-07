@@ -8,7 +8,7 @@ declare module "typeprops" {
     interface TypeProps<T, Params> {
         [OptionId]: {
             infer: T extends Option<infer L> ? [L] : never;
-            construct: Params[0] extends infer A ? Option<A> : never;
+            construct: Option<Params[0]>;
         };
     }
 }

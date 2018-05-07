@@ -1,12 +1,12 @@
-import { Generic, MonadProps, Parameters } from "typeprops";
+import { Generic, MonadProps, Parameter } from "typeprops";
 
 declare module "typeprops" {
-    interface MonadProps<T = {}, Params extends ArrayLike<any> = never>
+    interface MonadProps<T, Params extends ArrayLike<any>>
         extends FunctorProps<T, Params> {}
 }
 
 export type GenericMonad<F, A = any> = Generic<F, [A], MonadProps<F, [A]>>;
-export type MonadParameter<F> = Parameters<F, MonadProps<F>>[0];
+export type MonadParameter<F> = Parameter<F, 0, MonadProps<F, [any]>>;
 
 // There's no decent way to assure that the type representative has an "of"
 export interface InstanceMonad<F> {

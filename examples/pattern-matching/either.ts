@@ -1,5 +1,5 @@
 // Based on provided sample by Asad Saeeduddin
-import { Parameters, unknown } from "typeprops";
+import { Parameter, unknown } from "typeprops";
 import { GenericMonad, Matchable, Monad } from "./adt";
 import { Maybe, maybe } from "./maybe";
 
@@ -50,7 +50,7 @@ interface Right<T> {
 }
 
 declare module "typeprops" {
-    interface TypeProps<T = {}, Params extends ArrayLike<any> = never> {
+    interface TypeProps<T, Params> {
         "examples/pattern-matching/either#either": {
             infer:
                 | (T extends Left<infer T> ? [T, never] : never)
@@ -60,10 +60,10 @@ declare module "typeprops" {
     }
 }
 declare module "./adt" {
-    interface MonadProps<T = {}, Params extends ArrayLike<any> = never> {
+    interface MonadProps<T, Params> {
         "examples/pattern-matching/either#either": {
             infer: T extends Either<any, infer U> ? [U] : never;
-            construct: Either<Parameters<T>[0], Params[0]>;
+            construct: Either<Parameter<T>, Params[0]>;
         };
     }
 }

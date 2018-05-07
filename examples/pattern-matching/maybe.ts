@@ -1,5 +1,4 @@
 // Based on provided sample by Asad Saeeduddin
-
 import { GenericMonad, Matchable, Monad } from "./adt";
 
 // just :: a -> T a
@@ -40,7 +39,7 @@ export interface Just<T> {
 export type None = typeof MAYBE & { [key: string]: never };
 
 declare module "typeprops" {
-    interface TypeProps<T = {}, Params extends ArrayLike<any> = never> {
+    interface TypeProps<T, Params> {
         "examples/pattern-matching/maybe#maybe": {
             infer: T extends Maybe<infer A> ? [A] : never;
             construct: Maybe<Params[0]>;

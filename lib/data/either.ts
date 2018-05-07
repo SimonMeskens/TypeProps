@@ -12,10 +12,10 @@ declare module "typeprops" {
         };
     }
 
-    interface FunctorProps<T = {}, Params extends ArrayLike<any> = never> {
+    interface FunctorProps<T, Params> {
         [EitherId]: {
             infer: T extends Either<any, infer R> ? [R] : never;
-            construct: Either<Parameters<T>[0], Params[0]>;
+            construct: Either<Parameter<T, 0>, Params[0]>;
         };
     }
 }

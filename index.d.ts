@@ -30,7 +30,7 @@ declare module "typeprops" {
      * ```TypeScript
      * {
      *     infer: T extends MyType<any, infer A> ? [A] : never;
-     *     construct: MyType<Parameters<T>[0], Params[0]>
+     *     construct: MyType<Parameter<T, 0>, Params[0]>
      * }
      * ```
      */
@@ -74,23 +74,19 @@ declare module "typeprops" {
     > = T extends infer U
         ? Dictionary<U, Params, Override>[({} extends U
               ? any
-              : Dictionary<U, Params, Override>[Exclude<
-                    keyof Dictionary<U, Params, Override>,
+              : TypeProps<U, Params>[Exclude<
+                    keyof TypeProps<U, Params>,
                     "unfound"
                 >]["infer"]) extends never
               ? "unfound"
               : {
                     [Key in Exclude<
-                        keyof Dictionary<U, Params, Override>,
+                        keyof TypeProps<U, Params>,
                         "unfound"
-                    >]: Dictionary<
-                        U,
-                        Params,
-                        Override
-                    >[Key]["infer"] extends never
+                    >]: TypeProps<U, Params>[Key]["infer"] extends never
                         ? never
                         : Key
-                }[Exclude<keyof Dictionary<U, Params, Override>, "unfound">]]
+                }[Exclude<keyof TypeProps<U, Params>, "unfound">]]
         : never;
 
     type Parameters<
@@ -102,7 +98,7 @@ declare module "typeprops" {
         T,
         Index extends number = 0,
         Override extends { [K in keyof Override]: TypeProp } = never
-    > = Parameters<T>[Index];
+    > = Parameters<T, Override>[Index];
 
     type Generic<
         T,
