@@ -1,0 +1,25 @@
+{
+    "extends": "tslint:all",
+    "rulesDirectory": [
+        "tslint-eslint-rules",
+        "tslint-config-prettier",
+        "tslint-plugin-prettier"
+    ],
+    "rules": {
+        "prettier": true,
+        "ordered-imports": true,
+        "interface-name": [true, "never-prefix"],
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "never",
+                "singleline": "never"
+            }
+        ],
+        "triple-equals": [true, "allow-null-check"],
+        "member-access": [true, "no-public"]
+    },
+    "linterOptions": {
+        "exclude": ["package.json", "package-lock.json"]
+    }
+}
