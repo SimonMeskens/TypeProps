@@ -54,7 +54,7 @@ declare module "typeprops" {
     }
 
     /**
-     * A type-level pattern-matcher.
+     * A type-level pattern-matcher. Returns a TypeProp for a type T, with Params, given:
      *
      * 'T' is the type to match against
      * 'Params' is the parameters you want to mutate T with
@@ -63,9 +63,12 @@ declare module "typeprops" {
      * A rough overview of the algorithm:
      * - Split union type into distinct cases using a distributive conditional
      * - Construct a type dictionary using TypeProps & Override
-     * - If T is '{}', set the indexer to 'any'
-     * TODO: make Match use Override in the indexer
-     * TODO: finish explaining algorithm
+     * - If T is '{}', set the checking type to 'any'
+     * - Otherwise, set the checking type to the 'infer' property of T's TypeProp
+     * - If the checking type is 'never', set the indexer to "unfound"
+     * - Otherwise, use a mapped type to get the unique key for T's TypeProp, excluding "unfound" and set it as the indexer
+     * - If the checking type was 'any', it will run both previous paths and return a union of "unfound" and all other unique keys as indexer
+     * - Index the type dictionary with the indexer and return the TypeProp
      */
     type Match<
         T,
@@ -89,23 +92,50 @@ declare module "typeprops" {
                 }[Exclude<keyof TypeProps<U, Params>, "unfound">]]
         : never;
 
+    /**
+     * Get the type parameters for type T
+     *
+     * 'T' is the type to get parameters for
+     * 'Override' optionally allows you to override select types in the type dictionary
+     */
     type Parameters<
         T,
         Override extends { [K in keyof Override]: TypeProp } = never
     > = Match<T, never, Override>["infer"];
 
+    /**
+     * Get a type parameter for type T
+     *
+     * 'T' is the type to get the parameter for
+     * 'Index' optionally allows you to specify which parameter to return
+     * 'Override' optionally allows you to override select types in the type dictionary
+     */
     type Parameter<
         T,
         Index extends number = 0,
         Override extends { [K in keyof Override]: TypeProp } = never
     > = Parameters<T, Override>[Index];
 
+    /**
+     * Get a concrete generic type mutated from type T, with Params
+     *
+     * 'T' is the type to mutate
+     * 'Params' is the array of type parameters to mutate into, defaults to 'ArrayLike<any>'
+     * 'Override' optionally allows you to override select types in the type dictionary
+     */
     type Generic<
         T,
         Params extends ArrayLike<any> = ArrayLike<any>,
         Override extends { [K in keyof Override]: TypeProp } = never
     > = Match<T, Params, Override>["construct"];
 
+    /**
+     * Construct a type dictionary
+     *
+     * 'T' is the type to mutate
+     * 'Params' is the array of type parameters to mutate into
+     * 'Override' optionally allows you to override select types in the type dictionary
+     */
     type Dictionary<
         T,
         Params extends ArrayLike<any>,
