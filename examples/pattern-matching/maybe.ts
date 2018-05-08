@@ -1,4 +1,5 @@
 // Based on provided sample by Asad Saeeduddin
+import { test } from "../../tests/harness";
 import { GenericMonad, Matchable, Monad } from "./adt";
 
 // just :: a -> T a
@@ -62,12 +63,19 @@ const { map, chain, of } = GenericMaybe<Maybe<never>>({
     match
 });
 
-// Examples
-let a = map((x: number) => x + 2)(of(42)); // a: Maybe<number>
-let b = map((x: number) => x + 2)(none); // b: Maybe<number>
-let c = chain((x: number) => (x > 40 ? none : of(x * 2)))(of(42)); // c: Maybe<number>
-let d = chain((x: number) => (x > 40 ? none : of(x * 2)))(of(32)); // d: Maybe<number>
-let e = map((x: number) => none)(of(42)); // e: Maybe<None>
-let f = map((x: number) => of(x * 2))(of(42)); // f: Maybe<Maybe<number>>
+test("examples/pattern-matching/maybe", test => {
+    test.plan(6);
 
-console.log([a, b, c, d, e, f]);
+    test.deepEqual<Maybe<number>>(of(44))(map((x: number) => x + 2)(of(42)));
+    test.deepEqual<Maybe<number>>(none)(map((x: number) => x + 2)(none));
+    test.deepEqual<Maybe<number>>(none)(
+        chain((x: number) => (x > 40 ? none : of(x * 2)))(of(42))
+    );
+    test.deepEqual<Maybe<number>>(of(64))(
+        chain((x: number) => (x > 40 ? none : of(x * 2)))(of(32))
+    );
+    test.deepEqual<Maybe<None>>(of(none))(map((x: number) => none)(of(42)));
+    test.deepEqual<Maybe<Maybe<number>>>(of(of(84)))(
+        map((x: number) => of(x * 2))(of(42))
+    );
+});
