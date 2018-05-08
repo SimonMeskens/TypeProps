@@ -7,7 +7,7 @@
         "tsconfig.json"
     ],
     "scripts": {
-        "prepare": "npm run build",
+        "prepare": "npm run test",
         "test": "tsc -p tsconfig.json && ts-node --project tests/tsconfig.json tests/test.ts",
         "fix": "prettier --write \"**/*.{ts,json,md,prettierrc}\""
     },
