@@ -1,6 +1,6 @@
 import { unknown } from "typeprops";
-
 import { StaticFunctor } from "../../lib/abstract/functor";
+import { test } from "../../tests/harness";
 
 // Examples
 const arrayFunctor: StaticFunctor<any[]> = {
@@ -26,10 +26,15 @@ const nullableFunctor: StaticFunctor<object | null | undefined> = {
 
 const doubler = (x: number) => x * 2;
 
-const xs = arrayFunctor.map(doubler, [4, 2]); // xs: number[]
-const x = objectFunctor.map(doubler, 42); // x: number
-const xNull = nullableFunctor.map(doubler, null); // xNull: null
-const xSome = nullableFunctor.map(doubler, 4 as number | undefined); // xSome: number | undefined
+test("examples/abstract/nullable1", test => {
+    test.plan(4);
+    test.deepEqual<number[]>([8, 4])(arrayFunctor.map(doubler, [4, 2]));
+    test.equal<number>(84)(objectFunctor.map(doubler, 42));
+    test.equal<null>(null)(nullableFunctor.map(doubler, null));
+    test.equal<number | undefined>(84)(
+        nullableFunctor.map(doubler, 42 as number | undefined)
+    );
+});
 
 const functor: StaticFunctor<unknown | any[]> = {
     map(fn, fa) {
@@ -41,7 +46,12 @@ const functor: StaticFunctor<unknown | any[]> = {
     }
 };
 
-const ys = functor.map(doubler, [4, 2]); // ys: number[]
-const y = functor.map(doubler, 42); // y: number
-const yNull = functor.map(doubler, null); // yNull: null
-const ySome = functor.map(doubler, 42 as number | undefined); // ySome: number | undefined
+test("examples/abstract/nullable2", test => {
+    test.plan(4);
+    test.deepEqual<number[]>([8, 4])(functor.map(doubler, [4, 2]));
+    test.equal<number>(84)(functor.map(doubler, 42));
+    test.equal<null>(null)(functor.map(doubler, null));
+    test.equal<number | undefined>(84)(
+        functor.map(doubler, 42 as number | undefined)
+    );
+});

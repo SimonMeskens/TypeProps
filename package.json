@@ -2,20 +2,20 @@
     "name": "typeprops",
     "version": "0.3.0",
     "typings": "index.d.ts",
-    "files":[
+    "files": [
         "index.d.ts",
         "tsconfig.json"
     ],
     "scripts": {
         "prepare": "npm run build",
-        "build": "npm run build:typeprops",
-        "prebuild:typeprops": "tslint -p tsconfig.json",
-        "build:typeprops": "tsc index.d.ts",
-        "build:examples": "tsc -p tsconfig.examples.json",
+        "test": "tsc -p tsconfig.json && ts-node --project tests/tsconfig.json tests/test.ts",
         "fix": "prettier --write \"**/*.{ts,json,md,prettierrc}\""
     },
     "devDependencies": {
         "typescript": "^2.8.0",
+        "ts-node": "^6.0.3",
+        "@types/tape": "^4.2.32",
+        "tape": "^4.9.0",
         "prettier": "^1.12.1",
         "tslint": "^5.10.0",
         "tslint-eslint-rules": "^5.1.0",
