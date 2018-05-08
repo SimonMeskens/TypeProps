@@ -122,7 +122,7 @@ declare module "./adt" {
             match({ none: left, just: right })
     });
 
-    test("examples/pattern-matching/either1", test => {
+    test("examples/pattern-matching/either2", test => {
         test.plan(6);
 
         test.deepEqual<Maybe<number>>(of(42))(
