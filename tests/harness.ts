@@ -56,6 +56,12 @@ const typedTest = (test: tape.Test): Test => ({
     }
 });
 
+type IsEqual<Actual, Expected> = true extends (
+    | ([Expected] extends [Actual] ? true : false)
+    | ([Actual] extends [Expected] ? true : false))
+    ? Actual & Expected
+    : ErrorUnequal<Actual, Expected>;
+
 interface TestCase {
     (test: Test): void;
 }
@@ -105,12 +111,7 @@ interface Test {
      */
     ok: <Expected>(
         msg?: string
-    ) => <
-        Actual extends Reference,
-        Reference = [Expected] extends [Actual]
-            ? Actual & Expected
-            : ErrorUnequal<Actual, Expected>
-    >(
+    ) => <Actual extends Reference, Reference = IsEqual<Actual, Expected>>(
         value: Actual
     ) => void;
 
@@ -119,12 +120,7 @@ interface Test {
      */
     notOk: <Expected>(
         msg?: string
-    ) => <
-        Actual extends Reference,
-        Reference = [Expected] extends [Actual]
-            ? Actual & Expected
-            : ErrorUnequal<Actual, Expected>
-    >(
+    ) => <Actual extends Reference, Reference = IsEqual<Actual, Expected>>(
         value: Actual
     ) => void;
 
@@ -134,12 +130,7 @@ interface Test {
     equal: <Expected>(
         expected: any,
         msg?: string
-    ) => <
-        Actual extends Reference,
-        Reference = [Expected] extends [Actual]
-            ? Actual & Expected
-            : ErrorUnequal<Actual, Expected>
-    >(
+    ) => <Actual extends Reference, Reference = IsEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -149,12 +140,7 @@ interface Test {
     notEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <
-        Actual extends Reference,
-        Reference = [Expected] extends [Actual]
-            ? Actual & Expected
-            : ErrorUnequal<Actual, Expected>
-    >(
+    ) => <Actual extends Reference, Reference = IsEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -164,12 +150,7 @@ interface Test {
     deepEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <
-        Actual extends Reference,
-        Reference = [Expected] extends [Actual]
-            ? Actual & Expected
-            : ErrorUnequal<Actual, Expected>
-    >(
+    ) => <Actual extends Reference, Reference = IsEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -179,12 +160,7 @@ interface Test {
     notDeepEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <
-        Actual extends Reference,
-        Reference = [Expected] extends [Actual]
-            ? Actual & Expected
-            : ErrorUnequal<Actual, Expected>
-    >(
+    ) => <Actual extends Reference, Reference = IsEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -194,12 +170,7 @@ interface Test {
     deepLooseEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <
-        Actual extends Reference,
-        Reference = [Expected] extends [Actual]
-            ? Actual & Expected
-            : ErrorUnequal<Actual, Expected>
-    >(
+    ) => <Actual extends Reference, Reference = IsEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -209,12 +180,7 @@ interface Test {
     notDeepLooseEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <
-        Actual extends Reference,
-        Reference = [Expected] extends [Actual]
-            ? Actual & Expected
-            : ErrorUnequal<Actual, Expected>
-    >(
+    ) => <Actual extends Reference, Reference = IsEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
