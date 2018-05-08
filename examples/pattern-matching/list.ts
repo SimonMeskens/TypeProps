@@ -1,4 +1,5 @@
 // Based on provided sample by Asad Saeeduddin
+import { test } from "../../tests/harness";
 import { GenericMonad } from "./adt";
 
 const array = (() => {
@@ -46,9 +47,11 @@ const GenericList = <G extends GenericMonad<any>>({
     return { length, map };
 };
 
-let a = GenericList<any[]>(array).length([0, 1, 2]); // a: number
-console.log(a);
-// 3
-let b = GenericList<any[]>(array).map((x: number) => x * 2)([1, 2, 3]); // b: number[]
-console.log();
-// [2, 4, 6]
+test("examples/pattern-matching/list", test => {
+    test.plan(2);
+
+    test.equal<number>(3)(GenericList<any[]>(array).length([0, 1, 2]));
+    test.deepEqual<number[]>([2, 4, 6])(
+        GenericList<any[]>(array).map((x: number) => x * 2)([1, 2, 3])
+    );
+});

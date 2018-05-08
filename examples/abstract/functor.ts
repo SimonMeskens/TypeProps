@@ -6,6 +6,7 @@ import {
 } from "../../lib/abstract/functor";
 import { Either } from "../../lib/data/either";
 import { Option } from "../../lib/data/option";
+import { test } from "../../tests/harness";
 
 const instanceMap = <F extends InstanceFunctor<F>, B>(
     fn: (a: FunctorParameter<F>) => B,
@@ -20,22 +21,44 @@ const staticMap = <F, B>(
 
 const toString = (a: number) => a.toString();
 
-{
+test("examples/abstract/functor1", test => {
+    test.plan(4);
+
     let option = new Option(4);
-    let a = instanceMap(toString, option);
-    let b = staticMap(Option, toString, option);
     let staticOption: StaticFunctor<Option<any>> = Option;
     let instanceOption: InstanceFunctor<typeof option> = option;
-    let c = staticOption.map(toString, option);
-    let d = instanceOption.map(toString);
-}
 
-{
+    test.deepEqual<Option<string>>(option.map(toString))(
+        instanceMap(toString, option)
+    );
+    test.deepEqual<Option<string>>(option.map(toString))(
+        staticMap(Option, toString, option)
+    );
+    test.deepEqual<Option<string>>(option.map(toString))(
+        staticOption.map(toString, option)
+    );
+    test.deepEqual<Option<string>>(option.map(toString))(
+        instanceOption.map(toString)
+    );
+});
+
+test("examples/abstract/functor2", test => {
+    test.plan(4);
+
     let either = new Option(4).toEither("error");
-    let a = instanceMap(toString, either);
-    let b = staticMap(Either, toString, either);
     let staticEither: StaticFunctor<Either<any, any>> = Either;
     let instanceEither: InstanceFunctor<typeof either> = either;
-    let c = staticEither.map(toString, either);
-    let d = instanceEither.map(toString);
-}
+
+    test.deepEqual<Either<string, string>>(either.map(toString))(
+        instanceMap(toString, either)
+    );
+    test.deepEqual<Either<string, string>>(either.map(toString))(
+        staticMap(Either, toString, either)
+    );
+    test.deepEqual<Either<string, string>>(either.map(toString))(
+        staticEither.map(toString, either)
+    );
+    test.deepEqual<Either<string, string>>(either.map(toString))(
+        instanceEither.map(toString)
+    );
+});

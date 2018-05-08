@@ -1,3 +1,11 @@
+/**
+ * Standalone example of TypeProps that can be run in a Playground
+ *
+ * Acknowledgement:
+ * - @dagda1 for the sample code this was originally based on and the idea of a functor over `T?`
+ * - @masaeedu for the sample code to test the algorithms
+ * - @nadameu for help with the core design
+ */
 namespace poc {
     type unknown = {} | null | undefined;
 

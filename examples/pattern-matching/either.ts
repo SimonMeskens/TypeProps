@@ -1,7 +1,8 @@
 // Based on provided sample by Asad Saeeduddin
 import { Parameter, unknown } from "typeprops";
+import { test } from "../../tests/harness";
 import { GenericMonad, Matchable, Monad } from "./adt";
-import { Maybe, maybe } from "./maybe";
+import { Maybe, None, maybe } from "./maybe";
 
 // left :: a -> T a
 // right :: a -> T a
@@ -87,15 +88,28 @@ declare module "./adt" {
         match
     });
 
-    let a = map((x: number) => x * 2)(of(21)); // a: Either<unknown, number>
-    let b = map((x: number) => x * 2)(left("error")); // b: Either<string, number>
-    let c = chain((x: number) => (x > 40 ? left("error") : of(x * 2)))(of(42)); // c: Either<unknown, number>
-    let d = chain((x: number) => (x > 40 ? left("error") : of(x * 2)))(of(32)); // d: Either<unknown, number>
-    let e = map(() => left("error"))(of(42)); // e: Either<unknown, Either<string, never>>
-    let f = map((x: number) => of(x * 2))(of(42)); // f: Either<unknown, Either<unknown, number>>
+    test("examples/pattern-matching/either1", test => {
+        test.plan(6);
 
-    // Examples
-    console.log([a, b, c, d, e, f]);
+        test.deepEqual<Either<unknown, number>>(of(42))(
+            map((x: number) => x * 2)(of(21))
+        );
+        test.deepEqual<Either<string, number>>(left("error"))(
+            map((x: number) => x * 2)(left("error"))
+        );
+        test.deepEqual<Either<unknown, number>>(left("error"))(
+            chain((x: number) => (x > 40 ? left("error") : of(x * 2)))(of(42))
+        );
+        test.deepEqual<Either<unknown, number>>(of(64))(
+            chain((x: number) => (x > 40 ? left("error") : of(x * 2)))(of(32))
+        );
+        test.deepEqual<Either<unknown, Either<string, never>>>(
+            of(left("error"))
+        )(map(() => left("error"))(of(42)));
+        test.deepEqual<Either<unknown, Either<unknown, number>>>(of(of(84)))(
+            map((x: number) => of(x * 2))(of(42))
+        );
+    });
 }
 
 {
@@ -108,13 +122,22 @@ declare module "./adt" {
             match({ none: left, just: right })
     });
 
-    // Examples
-    let a = map((x: number) => x + 2)(of(42)); // a: Maybe<number>
-    let b = map((x: number) => x + 2)(none); // b: Maybe<number>
-    let c = chain((x: number) => (x > 40 ? none : of(x * 2)))(of(42)); // c: Maybe<number>
-    let d = chain((x: number) => (x > 40 ? none : of(x * 2)))(of(32)); // d: Maybe<number>
-    let e = map((x: number) => none)(of(42)); // e: Maybe<None>
-    let f = map((x: number) => of(x * 2))(of(42)); // f: Maybe<Maybe<number>>
+    test("examples/pattern-matching/either1", test => {
+        test.plan(6);
 
-    console.log([a, b, c, d, e, f]);
+        test.deepEqual<Maybe<number>>(of(42))(
+            map((x: number) => x * 2)(of(21))
+        );
+        test.deepEqual<Maybe<number>>(none)(map((x: number) => x * 2)(none));
+        test.deepEqual<Maybe<number>>(none)(
+            chain((x: number) => (x > 40 ? none : of(x * 2)))(of(42))
+        );
+        test.deepEqual<Maybe<number>>(of(64))(
+            chain((x: number) => (x > 40 ? none : of(x * 2)))(of(32))
+        );
+        test.deepEqual<Maybe<None>>(of(none))(map(() => none)(of(42)));
+        test.deepEqual<Maybe<Maybe<number>>>(of(of(84)))(
+            map((x: number) => of(x * 2))(of(42))
+        );
+    });
 }
