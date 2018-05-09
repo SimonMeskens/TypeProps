@@ -1,5 +1,5 @@
 // Based on provided sample by Asad Saeeduddin
-import { Parameter, unknown } from "typeprops";
+import { Parameter, unknown } from "../..";
 import { test } from "../../tests/harness";
 import { GenericMonad, Matchable, Monad } from "./adt";
 import { Maybe, None, maybe } from "./maybe";

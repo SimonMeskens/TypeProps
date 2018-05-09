@@ -1,9 +1,8 @@
-import { Generic, MonadProps, Parameter } from "typeprops";
+import { Generic, Parameter } from "../..";
+import { FunctorProps } from "./functor";
 
-declare module "typeprops" {
-    interface MonadProps<T, Params extends ArrayLike<any>>
-        extends FunctorProps<T, Params> {}
-}
+interface MonadProps<T, Params extends ArrayLike<any>>
+    extends FunctorProps<T, Params> {}
 
 export type GenericMonad<F, A = any> = Generic<F, [A], MonadProps<F, [A]>>;
 export type MonadParameter<F> = Parameter<F, 0, MonadProps<F, [any]>>;

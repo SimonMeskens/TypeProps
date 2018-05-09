@@ -1,14 +1,16 @@
 {
     "name": "typeprops",
     "version": "0.3.0",
-    "typings": "index.d.ts",
+    "typings": "index.ts",
     "files": [
-        "index.d.ts",
+        "index.ts",
+        "match.ts",
         "tsconfig.json"
     ],
     "scripts": {
         "prepare": "npm run test",
-        "test": "tsc -p tsconfig.json && ts-node --project tests/tsconfig.json node_modules/tape/bin/tape examples/*/*.ts | tap-spec",
+        "pretest": "tsc -p tests/tsconfig.json",
+        "test": "tape tests/.build/examples/*/*.js | tap-spec",
         "fix": "prettier --write \"**/*.{ts,json,md,prettierrc}\""
     },
     "devDependencies": {

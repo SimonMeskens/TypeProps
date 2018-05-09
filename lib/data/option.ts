@@ -1,4 +1,4 @@
-import { unknown } from "typeprops";
+import { unknown } from "../..";
 import { Either, Left, Right } from "./either";
 import { UnitLike } from "./unit";
 

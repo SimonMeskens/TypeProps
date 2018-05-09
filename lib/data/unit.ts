@@ -1,4 +1,4 @@
-import { unknown } from "typeprops";
+import { unknown } from "../..";
 import { Option } from "./option";
 
 declare const UnitId = "typeprops/lib/data/unit";

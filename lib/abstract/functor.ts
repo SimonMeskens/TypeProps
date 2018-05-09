@@ -1,8 +1,6 @@
-import { FunctorProps, Generic, Parameter } from "typeprops";
+import { Generic, Parameter } from "../..";
 
-declare module "typeprops" {
-    interface FunctorProps<T, Params extends ArrayLike<any>> {}
-}
+export interface FunctorProps<T, Params extends ArrayLike<any>> {}
 
 export type GenericFunctor<F, A = any> = Generic<F, [A], FunctorProps<F, [A]>>;
 export type FunctorParameter<F> = Parameter<F, 0, FunctorProps<F, any[]>>;

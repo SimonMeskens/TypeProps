@@ -1,4 +1,4 @@
-import { unknown } from "typeprops";
+import { Parameter, unknown } from "../..";
 import { Option } from "./option";
 import { UnitLike } from "./unit";
 
@@ -11,7 +11,9 @@ declare module "typeprops" {
             construct: Either<Params[0], Params[1]>;
         };
     }
+}
 
+declare module "../abstract/functor" {
     interface FunctorProps<T, Params> {
         [EitherId]: {
             infer: T extends Either<any, infer R> ? [R] : never;

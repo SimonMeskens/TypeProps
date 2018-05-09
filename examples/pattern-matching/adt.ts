@@ -1,4 +1,4 @@
-import { Generic, Parameter } from "typeprops";
+import { Generic, Parameter } from "../..";
 
 export interface MonadProps<T, Params extends ArrayLike<any>> {}
 

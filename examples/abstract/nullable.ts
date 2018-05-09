@@ -1,4 +1,4 @@
-import { unknown } from "typeprops";
+import { unknown } from "../..";
 import { StaticFunctor } from "../../lib/abstract/functor";
 import { test } from "../../tests/harness";
 
