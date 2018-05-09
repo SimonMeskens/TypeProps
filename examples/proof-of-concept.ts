@@ -59,6 +59,35 @@ namespace poc {
     const yNull = functor.map(doubler, null); // yNull: null
     const ySome = functor.map(doubler, 42 as number | undefined); // ySome: number | undefined
 
+    // Test output
+
+    console.log("TAP version 13");
+    console.log("# TypeProps Proof of Concept");
+    console.log("1..8");
+
+    console.log(
+        xs[0] === 8 && xs[1] === 4 ? "ok 1 array map" : "not ok 1 array map"
+    );
+    console.log(x === 84 ? "ok 2 object map" : "not ok 2 object map");
+    console.log(xNull === null ? "ok 3 null map" : "not ok 3 null map");
+    console.log(xSome === 8 ? "ok 4 some map" : "not ok 4 some map");
+    console.log(
+        ys[0] === 8 && ys[1] === 4
+            ? "ok 5 generic array map"
+            : "not ok 5 generic array map"
+    );
+    console.log(
+        y === 84 ? "ok 6 generic object map" : "not ok 6 generic object map"
+    );
+    console.log(
+        yNull === null ? "ok 7 generic null map" : "not ok 7 generic null map"
+    );
+    console.log(
+        ySome === 84
+            ? "ok 8 generic nullable map"
+            : "not ok 8 generic nullable map"
+    );
+
     // Plumbing
     interface TypeProps<T = {}, Params extends ArrayLike<any> = never> {
         array: {
