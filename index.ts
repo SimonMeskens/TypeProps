@@ -14,8 +14,8 @@ export { Match } from "./match";
 /**
  * Get the type parameters for type T
  *
- * 'T' is the type to get parameters for
- * 'Override' optionally allows you to override select types in the type dictionary
+ * `T` is the type to get parameters for
+ * `Override` optionally allows you to override select types in the type dictionary
  */
 export type Parameters<
     T,
@@ -25,9 +25,9 @@ export type Parameters<
 /**
  * Get a type parameter for type T
  *
- * 'T' is the type to get the parameter for
- * 'Index' optionally allows you to specify which parameter to return
- * 'Override' optionally allows you to override select types in the type dictionary
+ * `T` is the type to get the parameter for
+ * `Index` optionally allows you to specify which parameter to return
+ * `Override` optionally allows you to override select types in the type dictionary
  */
 export type Parameter<
     T,
@@ -38,9 +38,9 @@ export type Parameter<
 /**
  * Get a concrete generic type mutated from type T, with Params
  *
- * 'T' is the type to mutate
- * 'Params' is the array of type parameters to mutate into, defaults to 'ArrayLike<any>'
- * 'Override' optionally allows you to override select types in the type dictionary
+ * `T` is the type to mutate
+ * `Params` is the array of type parameters to mutate into, defaults to `ArrayLike<any>`
+ * `Override` optionally allows you to override select types in the type dictionary
  */
 export type Generic<
     T,
@@ -50,10 +50,10 @@ export type Generic<
 
 declare module "typeprops" {
     /**
-     * A dictionary of 'TypeProps' that can be extended through [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces).
+     * A dictionary of `TypeProps` types that can be extended through [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces).
      *
-     * 'T' is the type you want to check and/or mutate.
-     * 'Params' is a list of type parameters to mutate 'T' with
+     * `T` is the type you want to check and/or mutate.
+     * `Params` is a list of type parameters to mutate `T` with
      *
      * Each entry should have a unique key, typed with the following two properties:
      *
@@ -64,9 +64,9 @@ declare module "typeprops" {
      * }
      * ```
      *
-     * 'infer' should always verify the type is correct and return 'never' otherwise. It should return an ArrayLike with a list of inferred type parameters.
+     * `infer` should always verify the type is correct and return `never` otherwise. It should return an ArrayLike with a list of inferred type parameters.
      *
-     * 'construct' should return the mutated type using the passed in 'Params'. It should generally not check if the passed in type 'T' is correct. If you want to reuse parameters from 'T', you can do it like this:
+     * `construct` should return the mutated type using the passed in `Params`. It should generally not check if the passed in type `T` is correct. If you want to reuse parameters from `T`, you can do it like this:
      *
      * ```TypeScript
      * {
