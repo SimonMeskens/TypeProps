@@ -1,4 +1,5 @@
 import * as tape from "tape";
+import { CheckEqual } from "./types";
 
 export const test = (name: string, cb: TestCase): void => {
     tape(name, t => cb(typedTest(t)));
@@ -52,16 +53,6 @@ const typedTest = (test: tape.Test): Test => ({
     }
 });
 
-export interface ErrorUnequal<A, B> {
-    "Types not equal": true;
-}
-
-export type AssertEqual<Actual, Expected> = true extends (
-    | ([Expected] extends [Actual] ? true : false)
-    | ([Actual] extends [Expected] ? true : false))
-    ? Actual & Expected
-    : ErrorUnequal<Actual, Expected>;
-
 export interface TestCase {
     (test: Test): void;
 }
@@ -111,7 +102,7 @@ export interface Test {
      */
     ok: <Expected>(
         msg?: string
-    ) => <Actual extends Reference, Reference = AssertEqual<Actual, Expected>>(
+    ) => <Actual extends Reference, Reference = CheckEqual<Actual, Expected>>(
         value: Actual
     ) => void;
 
@@ -120,7 +111,7 @@ export interface Test {
      */
     notOk: <Expected>(
         msg?: string
-    ) => <Actual extends Reference, Reference = AssertEqual<Actual, Expected>>(
+    ) => <Actual extends Reference, Reference = CheckEqual<Actual, Expected>>(
         value: Actual
     ) => void;
 
@@ -130,7 +121,7 @@ export interface Test {
     equal: <Expected>(
         expected: any,
         msg?: string
-    ) => <Actual extends Reference, Reference = AssertEqual<Actual, Expected>>(
+    ) => <Actual extends Reference, Reference = CheckEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -140,7 +131,7 @@ export interface Test {
     notEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <Actual extends Reference, Reference = AssertEqual<Actual, Expected>>(
+    ) => <Actual extends Reference, Reference = CheckEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -150,7 +141,7 @@ export interface Test {
     deepEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <Actual extends Reference, Reference = AssertEqual<Actual, Expected>>(
+    ) => <Actual extends Reference, Reference = CheckEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -160,7 +151,7 @@ export interface Test {
     notDeepEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <Actual extends Reference, Reference = AssertEqual<Actual, Expected>>(
+    ) => <Actual extends Reference, Reference = CheckEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -170,7 +161,7 @@ export interface Test {
     deepLooseEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <Actual extends Reference, Reference = AssertEqual<Actual, Expected>>(
+    ) => <Actual extends Reference, Reference = CheckEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 
@@ -180,7 +171,7 @@ export interface Test {
     notDeepLooseEqual: <Expected>(
         expected: any,
         msg?: string
-    ) => <Actual extends Reference, Reference = AssertEqual<Actual, Expected>>(
+    ) => <Actual extends Reference, Reference = CheckEqual<Actual, Expected>>(
         actual: Actual
     ) => void;
 

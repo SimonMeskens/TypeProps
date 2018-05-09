@@ -10,7 +10,7 @@
     "scripts": {
         "prepare": "npm run test",
         "pretest": "tsc -p tests/tsconfig.json",
-        "test": "tape tests/.build/examples/*/*.js | tap-spec",
+        "test": "tape tests/.build/examples/**/*.js | tap-spec",
         "fix": "prettier --write \"**/*.{ts,json,md,prettierrc}\""
     },
     "devDependencies": {

@@ -3,6 +3,8 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "outDir": ".build"
+
+        "outDir": ".build",
+        "noEmit": false
     }
 }
