@@ -19,7 +19,7 @@ export type Match<
         : never;
 
 // If a match, return unique key
-type CheckMatch<T, Params extends ArrayLike<any> = ArrayLike<any>> =
+export type CheckMatch<T, Params extends ArrayLike<any> = ArrayLike<any>> =
     // Handle the "unfound" case
     // If T is `{}` or `any`, infer `any`, this will select both paths of the conditional and return `"unfound" | KeyOf<T, Params>`
     ({} extends T ? any : Infer<T, Params>) extends never
@@ -27,25 +27,25 @@ type CheckMatch<T, Params extends ArrayLike<any> = ArrayLike<any>> =
         : KeyOf<T, Params>;
 
 // Match for all keys and return key if matched, then construct union
-type KeyOf<T, Params extends ArrayLike<any> = ArrayLike<any>> = {
+export type KeyOf<T, Params extends ArrayLike<any> = ArrayLike<any>> = {
     [Key in Keys<T, Params>]: Infer<T, Params, Key> extends never ? never : Key
 }[Keys<T, Params>];
 
 // List of TypeProps keys, excluding "unfound"
-type Keys<T, Params extends ArrayLike<any>> = Exclude<
+export type Keys<T, Params extends ArrayLike<any>> = Exclude<
     keyof TypeProps<T, Params>,
     "unfound"
 >;
 
 // Core matching algorithm
-type Infer<
+export type Infer<
     T,
     Params extends ArrayLike<any>,
     Key extends Keys<T, Params> = Keys<T, Params>
 > = TypeProps<T, Params>[Key]["infer"];
 
 // Combine TypeProps and Override into single dictionary
-type Dictionary<
+export type Dictionary<
     T,
     Params extends ArrayLike<any>,
     Override extends { [K in keyof Override]: TypeProp }
